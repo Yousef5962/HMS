@@ -79,7 +79,9 @@ public:
         if (appointmentQueue.empty()) {
             return -1;
         }
-        return appointmentQueue.front();
+        int patient = appointmentQueue.front();
+        appointmentQueue.pop();
+        return patient;
     }
 
     int getId() {
