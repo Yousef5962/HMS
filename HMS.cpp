@@ -6,7 +6,8 @@
 using namespace std;
 
 // ========== ENUMERATIONS ========== //
-enum Department {
+enum Department
+{
     CARDIOLOGY,
     NEUROLOGY,
     ORTHOPEDICS,
@@ -15,7 +16,8 @@ enum Department {
     GENERAL
 };
 
-enum RoomType {
+enum RoomType
+{
     GENERAL_WARD,
     ICU,
     PRIVATE_ROOM,
@@ -23,7 +25,8 @@ enum RoomType {
 };
 
 // ========== PATIENT CLASS ========== //
-class Patient {
+class Patient
+{
 private:
     int id;
     string name;
@@ -35,7 +38,16 @@ private:
     RoomType roomType;
 
 public:
-    Patient(int pid, string n, int a, string c);
+    Patient(int pid, string n, int a, string c)
+    {
+        id = pid;
+        name = n;
+        age = a;
+        contact = c;
+        // other default values :
+        isAdmitted = false;
+        roomType = GENERAL_WARD;
+    }
 
     void admitPatient(RoomType type);
 
@@ -57,7 +69,8 @@ public:
 };
 
 // ========== DOCTOR CLASS ========== //
-class Doctor {
+class Doctor
+{
 private:
     int id;
     string name;
@@ -65,18 +78,22 @@ private:
     queue<int> appointmentQueue;
 
 public:
-    Doctor(int did, string n, Department d) {
+    Doctor(int did, string n, Department d)
+    {
         id = did;
         name = n;
         department = d;
     }
 
-    void addAppointment(int patientId) {
+    void addAppointment(int patientId)
+    {
         appointmentQueue.push(patientId);
     }
 
-    int seePatient() {
-        if (appointmentQueue.empty()) {
+    int seePatient()
+    {
+        if (appointmentQueue.empty())
+        {
             return -1;
         }
         int patient = appointmentQueue.front();
@@ -84,34 +101,39 @@ public:
         return patient;
     }
 
-    int getId() {
+    int getId()
+    {
         return id;
     }
 
-    string getName() {
+    string getName()
+    {
         return name;
     }
 
-    string getDepartment() {
-        switch (department) {
-            case CARDIOLOGY:
-                return "CARDIOLOGY";
-            case NEUROLOGY:
-                return "NEUROLOGY";
-            case ORTHOPEDICS:
-                return "ORTHOPEDICS";
-            case PEDIATRICS:
-                return "PEDIATRICS";
-            case GENERAL:
-                return "GENERAL";
-            default:
-                return " ";
+    string getDepartment()
+    {
+        switch (department)
+        {
+        case CARDIOLOGY:
+            return "CARDIOLOGY";
+        case NEUROLOGY:
+            return "NEUROLOGY";
+        case ORTHOPEDICS:
+            return "ORTHOPEDICS";
+        case PEDIATRICS:
+            return "PEDIATRICS";
+        case GENERAL:
+            return "GENERAL";
+        default:
+            return " ";
         }
     }
 };
 
 // ========== HOSPITAL CLASS ========== //
-class Hospital {
+class Hospital
+{
 private:
     vector<Patient> patients;
     vector<Doctor> doctors;
@@ -140,7 +162,8 @@ public:
 };
 
 // ========== MAIN PROGRAM ========== //
-int main() {
+int main()
+{
     Hospital hospital;
 
     // Test Case 1: Registering patients
@@ -197,8 +220,8 @@ int main() {
     // Test Case 10: Edge cases
     Hospital emptyHospital;
     emptyHospital.displayPatientInfo(1); // No patients
-    emptyHospital.displayDoctorInfo(1); // No doctors
-    emptyHospital.handleEmergency(); // No emergencies
+    emptyHospital.displayDoctorInfo(1);  // No doctors
+    emptyHospital.handleEmergency();     // No emergencies
 
     return 0;
 }
