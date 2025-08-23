@@ -156,9 +156,57 @@ public:
 
     void bookAppointment(int doctorId, int patientId);
 
-    void displayPatientInfo(int patientId);
+    void displayPatientInfo(int patientId)
+    {
+        Patient* patient = nullptr;
+        for (int i = 0; i < patients.size(); ++i)
+        {
+            if (patients[i].getId() == patientId)
+            {
+                patient = &patients[i];
+                break;
+            }
+        }
 
-    void displayDoctorInfo(int doctorId);
+        if (patient)
+        {
+            cout << "\n===== Patient Information =====" << endl;
+            cout << "ID: " << patient->getId() << endl;
+            cout << "Name: " << patient->getName() << endl;
+            cout << "Admission Status: " << (patient->getAdmissionStatus() ? "Admitted" : "Not Admitted") << endl;
+            patient->displayHistory();
+            cout << "=============================\n" << endl;
+        }
+        else
+        {
+            cout << "Display Failed: Patient with ID " << patientId << " not found." << endl;
+        }
+    }
+
+    void displayDoctorInfo(int doctorId)
+    {
+        Doctor* doctor = nullptr;
+        for (int i = 0; i < doctors.size(); ++i)
+        {
+            if (doctors[i].getId() == doctorId)
+            {
+                doctor = &doctors[i];
+                break;
+            }
+        }
+        if (doctor)
+        {
+            cout << "\n===== Doctor Information =====" << endl;
+            cout << "ID: " << doctor->getId() << endl;
+            cout << "Name: " << doctor->getName() << endl;
+            cout << "Department: " << doctor->getDepartment() << endl;
+            cout << "==========================\n" << endl;
+        }
+        else
+        {
+            cout << "Display Failed: Doctor with ID " << doctorId << " not found." << endl;
+        }
+    }
 };
 
 // ========== MAIN PROGRAM ========== //
