@@ -24,7 +24,7 @@ enum RoomType
     SEMI_PRIVATE
 };
 
-// ========== PATIENT CLASS ========== //hj
+// ========== PATIENT CLASS ========== //hjth
 class Patient
 {
 private:
