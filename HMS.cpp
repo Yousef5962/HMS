@@ -49,23 +49,47 @@ public:
         roomType = GENERAL_WARD;
     }
 
-    void admitPatient(RoomType type);
+    void admitPatient(RoomType type){
+        isAdmitted=true;
+        roomType=type;
+        cout<<name<<"has been admitted to room type"<<type<<endl;
+    }
 
-    void dischargePatient();
+    void dischargePatient(){
+        isAdmitted=false;
+        cout<<name<<"has been discharged"<<endl;
+    }
 
-    void addMedicalRecord(string record);
+    void addMedicalRecord(string record){
+        medicalHistory.push(record);
+    }
 
-    void requestTest(string testName);
+    void requestTest(string testName){
+        cout<<name<<"has requested test:"<<testName<<endl;
 
-    string performTest();
+    }
 
-    void displayHistory();
+    string performTest(){
+        string result="test completed successfully";
+        cout<<result<<endl;
+        return result;
+    }
 
-    int getId();
+    void displayHistory(){
+        cout<<"medical history for"<<name<<":"<<endl;
+        for(const string &record:medicalHistory){
+            cout<<"-"<<record<<endl;
+        }
+    }
 
-    string getName();
+    int getId(){
+    return id;}
 
-    bool getAdmissionStatus();
+    string getName(){
+    return name;}
+
+    bool getAdmissionStatus(){
+    return isAdmitted;}
 };
 
 // ========== DOCTOR CLASS ========== //
