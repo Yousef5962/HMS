@@ -49,47 +49,63 @@ public:
         roomType = GENERAL_WARD;
     }
 
-    void admitPatient(RoomType type){
-        isAdmitted=true;
-        roomType=type;
-        cout<<name<<"has been admitted to room type"<<type<<endl;
+    void admitPatient(RoomType type)
+    {
+        isAdmitted = true;
+        roomType = type;
+        string log = "Patient: " + name + " --> has been admitted to room type: " + to_string(type);
+        medicalHistory.push(log);
+        cout << log << endl;
     }
 
-    void dischargePatient(){
-        isAdmitted=false;
-        cout<<name<<"has been discharged"<<endl;
+    void dischargePatient()
+    {
+        isAdmitted = false;
+        string log = "Patient: " + name + " --> has been discharged ";
+        medicalHistory.push(log);
+        cout << log << endl;
     }
 
-    void addMedicalRecord(string record){
+    void addMedicalRecord(string record)
+    {
         medicalHistory.push(record);
     }
 
-    void requestTest(string testName){
-        cout<<name<<"has requested test:"<<testName<<endl;
-
+    void requestTest(string testName)
+    {
+        cout << name << "has requested test:" << testName << endl;
     }
 
-    string performTest(){
-        string result="test completed successfully";
-        cout<<result<<endl;
+    string performTest()
+    {
+        string result = "test completed successfully";
+        cout << result << endl;
         return result;
     }
 
-    void displayHistory(){
-        cout<<"medical history for"<<name<<":"<<endl;
-        for(const string &record:medicalHistory){
-            cout<<"-"<<record<<endl;
+    void displayHistory()
+    {
+        cout << "medical history for" << name << ":" << endl;
+        for (const string &record : medicalHistory)
+        {
+            cout << "-" << record << endl;
         }
     }
 
-    int getId(){
-    return id;}
+    int getId()
+    {
+        return id;
+    }
 
-    string getName(){
-    return name;}
+    string getName()
+    {
+        return name;
+    }
 
-    bool getAdmissionStatus(){
-    return isAdmitted;}
+    bool getAdmissionStatus()
+    {
+        return isAdmitted;
+    }
 };
 
 // ========== DOCTOR CLASS ========== //
@@ -176,7 +192,7 @@ public:
 
     void addEmergency(int patientId);
 
-        int handleEmergency()
+    int handleEmergency()
     {
         if (emergencyQueue.empty())
         {
@@ -186,7 +202,7 @@ public:
         int patientId = emergencyQueue.front();
         emergencyQueue.pop();
 
-        Patient* patient = nullptr;
+        Patient *patient = nullptr;
         for (int i = 0; i < patients.size(); ++i)
         {
             if (patients[i].getId() == patientId)
@@ -208,10 +224,10 @@ public:
         return patientId;
     }
 
-        void bookAppointment(int doctorId, int patientId)
+    void bookAppointment(int doctorId, int patientId)
     {
-        Doctor* doctor = nullptr;
-        Patient* patient = nullptr;
+        Doctor *doctor = nullptr;
+        Patient *patient = nullptr;
 
         for (int i = 0; i < doctors.size(); ++i)
         {
@@ -249,7 +265,7 @@ public:
 
     void displayPatientInfo(int patientId)
     {
-        Patient* patient = nullptr;
+        Patient *patient = nullptr;
         for (int i = 0; i < patients.size(); ++i)
         {
             if (patients[i].getId() == patientId)
@@ -266,7 +282,8 @@ public:
             cout << "Name: " << patient->getName() << endl;
             cout << "Admission Status: " << (patient->getAdmissionStatus() ? "Admitted" : "Not Admitted") << endl;
             patient->displayHistory();
-            cout << "=============================\n" << endl;
+            cout << "=============================\n"
+                 << endl;
         }
         else
         {
@@ -276,7 +293,7 @@ public:
 
     void displayDoctorInfo(int doctorId)
     {
-        Doctor* doctor = nullptr;
+        Doctor *doctor = nullptr;
         for (int i = 0; i < doctors.size(); ++i)
         {
             if (doctors[i].getId() == doctorId)
@@ -291,7 +308,8 @@ public:
             cout << "ID: " << doctor->getId() << endl;
             cout << "Name: " << doctor->getName() << endl;
             cout << "Department: " << doctor->getDepartment() << endl;
-            cout << "==========================\n" << endl;
+            cout << "==========================\n"
+                 << endl;
         }
         else
         {
