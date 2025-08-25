@@ -85,10 +85,12 @@ public:
 
     void displayHistory()
     {
-        cout << "medical history for" << name << ":" << endl;
-        for (const string &record : medicalHistory)
+        cout << "Medical history for " << name << ":\n";
+        stack<string> temp = medicalHistory;
+        while (!temp.empty())
         {
-            cout << "-" << record << endl;
+            cout << "- " << temp.top() << endl;
+            temp.pop();
         }
     }
 
@@ -183,14 +185,35 @@ private:
 
 public:
     Hospital();
-
     int registerPatient(string name, int age, string contact);
-
     int addDoctor(string name, Department dept);
+    void displayCounters() const;
 
-    void admitPatient(int patientId, RoomType type);
+    void admitPatient(int patientId, RoomType type)
+    {
+        for (auto &patient : patients)
+        {
+            if (patient.getId() == patientId)
+            {
+                if (patient.getAdmissionStatus())
+                {
+                    cout << "Patient " << patient.getName() << " is already admitted." << endl;
+                }
+                else
+                {
+                    patient.admitPatient(type);
+                }
+                return;
+            }
+        }
+        cout << "Admit Failed: Patient with ID " << patientId << " not found." << endl;
+    }
 
-    void addEmergency(int patientId);
+    void addEmergency(int patientId)
+    {
+        emergencyQueue.push(patientId);
+        cout << "Emergency case added for patient ID: " << patientId << endl;
+    }
 
     int handleEmergency()
     {
@@ -317,6 +340,33 @@ public:
         }
     }
 };
+Hospital::Hospital()
+{
+    patientCounter = 1;
+    doctorCounter = 1;
+}
+
+int Hospital::registerPatient(string name, int age, string contact)
+{
+    Patient newPatient(patientCounter, name, age, contact);
+    patients.push_back(newPatient);
+    cout << "Patient registered with ID: " << patientCounter << endl;
+    return patientCounter++;
+}
+
+int Hospital::addDoctor(string name, Department dept)
+{
+    Doctor newDoctor(doctorCounter, name, dept);
+    doctors.push_back(newDoctor);
+    cout << "Doctor added with ID: " << doctorCounter << endl;
+    return doctorCounter++;
+}
+
+void Hospital::displayCounters() const
+{
+    cout << "Patient Counter: " << patientCounter << endl;
+    cout << "Doctor Counter: " << doctorCounter << endl;
+}
 
 // ========== MAIN PROGRAM ========== //
 int main()
