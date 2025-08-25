@@ -49,20 +49,28 @@ public:
         roomType = GENERAL_WARD;
     }
 
-    void admitPatient(RoomType type){
-        isAdmitted=true;
-        roomType=type;
-        cout<<name<<"has been admitted to room type"<<type<<endl;
+    void admitPatient(RoomType type)
+    {
+        isAdmitted = true;
+        roomType = type;
+        string log = "Patient: " + name + " --> has been admitted to room type: " + to_string(type);
+        medicalHistory.push(log);
+        cout << log << endl;
     }
 
-    void dischargePatient(){
-        isAdmitted=false;
-        cout<<name<<"has been discharged"<<endl;
+    void dischargePatient()
+    {
+        isAdmitted = false;
+        string log = "Patient: " + name + " --> has been discharged ";
+        medicalHistory.push(log);
+        cout << log << endl;
     }
 
-    void addMedicalRecord(string record){
+    void addMedicalRecord(string record)
+    {
         medicalHistory.push(record);
     }
+
 
     void requestTest(string testName){
         cout<<name<<"has requested test:"<<testName<<endl;
@@ -70,31 +78,40 @@ public:
 
     }
 
-    string performTest(){
-        string result="test completed successfully";
-        cout<<result<<endl;
+    string performTest()
+    {
+        string result = "test completed successfully";
+        cout << result << endl;
         return result;
     }
 
-    void displayHistory(){
-              cout << "Medical history for " << name << ":\n";
+    void displayHistory()
+    {
+        cout << "Medical history for " << name << ":\n";
         stack<string> temp = medicalHistory;
-        while (!temp.empty()) {
+        while (!temp.empty())
+        {
+
             cout << "- " << temp.top() << endl;
             temp.pop();
         }
     }
 
+    int getId()
+    {
+        return id;
+    }
 
 
-    int getId(){
-    return id;}
+    string getName()
+    {
+        return name;
+    }
 
-    string getName(){
-    return name;}
-
-    bool getAdmissionStatus(){
-    return isAdmitted;}
+    bool getAdmissionStatus()
+    {
+        return isAdmitted;
+    }
 };
 
 // ========== DOCTOR CLASS ========== //
@@ -172,16 +189,37 @@ private:
 
 public:
     Hospital();
-
     int registerPatient(string name, int age, string contact);
-
     int addDoctor(string name, Department dept);
+    void displayCounters() const;
 
-    void admitPatient(int patientId, RoomType type);
+    void admitPatient(int patientId, RoomType type)
+    {
+        for (auto &patient : patients)
+        {
+            if (patient.getId() == patientId)
+            {
+                if (patient.getAdmissionStatus())
+                {
+                    cout << "Patient " << patient.getName() << " is already admitted." << endl;
+                }
+                else
+                {
+                    patient.admitPatient(type);
+                }
+                return;
+            }
+        }
+        cout << "Admit Failed: Patient with ID " << patientId << " not found." << endl;
+    }
 
-    void addEmergency(int patientId);
+    void addEmergency(int patientId)
+    {
+        emergencyQueue.push(patientId);
+        cout << "Emergency case added for patient ID: " << patientId << endl;
+    }
 
-        int handleEmergency()
+    int handleEmergency()
     {
         if (emergencyQueue.empty())
         {
@@ -191,7 +229,7 @@ public:
         int patientId = emergencyQueue.front();
         emergencyQueue.pop();
 
-        Patient* patient = nullptr;
+        Patient *patient = nullptr;
         for (int i = 0; i < patients.size(); ++i)
         {
             if (patients[i].getId() == patientId)
@@ -213,10 +251,10 @@ public:
         return patientId;
     }
 
-        void bookAppointment(int doctorId, int patientId)
+    void bookAppointment(int doctorId, int patientId)
     {
-        Doctor* doctor = nullptr;
-        Patient* patient = nullptr;
+        Doctor *doctor = nullptr;
+        Patient *patient = nullptr;
 
         for (int i = 0; i < doctors.size(); ++i)
         {
@@ -254,7 +292,7 @@ public:
 
     void displayPatientInfo(int patientId)
     {
-        Patient* patient = nullptr;
+        Patient *patient = nullptr;
         for (int i = 0; i < patients.size(); ++i)
         {
             if (patients[i].getId() == patientId)
@@ -271,7 +309,8 @@ public:
             cout << "Name: " << patient->getName() << endl;
             cout << "Admission Status: " << (patient->getAdmissionStatus() ? "Admitted" : "Not Admitted") << endl;
             patient->displayHistory();
-            cout << "=============================\n" << endl;
+            cout << "=============================\n"
+                 << endl;
         }
         else
         {
@@ -281,7 +320,7 @@ public:
 
     void displayDoctorInfo(int doctorId)
     {
-        Doctor* doctor = nullptr;
+        Doctor *doctor = nullptr;
         for (int i = 0; i < doctors.size(); ++i)
         {
             if (doctors[i].getId() == doctorId)
@@ -296,7 +335,8 @@ public:
             cout << "ID: " << doctor->getId() << endl;
             cout << "Name: " << doctor->getName() << endl;
             cout << "Department: " << doctor->getDepartment() << endl;
-            cout << "==========================\n" << endl;
+            cout << "==========================\n"
+                 << endl;
         }
         else
         {
@@ -304,6 +344,33 @@ public:
         }
     }
 };
+Hospital::Hospital()
+{
+    patientCounter = 1;
+    doctorCounter = 1;
+}
+
+int Hospital::registerPatient(string name, int age, string contact)
+{
+    Patient newPatient(patientCounter, name, age, contact);
+    patients.push_back(newPatient);
+    cout << "Patient registered with ID: " << patientCounter << endl;
+    return patientCounter++;
+}
+
+int Hospital::addDoctor(string name, Department dept)
+{
+    Doctor newDoctor(doctorCounter, name, dept);
+    doctors.push_back(newDoctor);
+    cout << "Doctor added with ID: " << doctorCounter << endl;
+    return doctorCounter++;
+}
+
+void Hospital::displayCounters() const
+{
+    cout << "Patient Counter: " << patientCounter << endl;
+    cout << "Doctor Counter: " << doctorCounter << endl;
+}
 
 // ========== MAIN PROGRAM ========== //
 int main()
