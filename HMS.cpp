@@ -71,9 +71,11 @@ public:
         medicalHistory.push(record);
     }
 
-    void requestTest(string testName)
-    {
-        cout << name << "has requested test:" << testName << endl;
+
+    void requestTest(string testName){
+        cout<<name<<"has requested test:"<<testName<<endl;
+        testQueue.push(testName);
+
     }
 
     string performTest()
@@ -89,6 +91,7 @@ public:
         stack<string> temp = medicalHistory;
         while (!temp.empty())
         {
+
             cout << "- " << temp.top() << endl;
             temp.pop();
         }
@@ -98,6 +101,7 @@ public:
     {
         return id;
     }
+
 
     string getName()
     {
