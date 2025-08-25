@@ -66,6 +66,7 @@ public:
 
     void requestTest(string testName){
         cout<<name<<"has requested test:"<<testName<<endl;
+        testQueue.push(testName);
 
     }
 
@@ -76,11 +77,15 @@ public:
     }
 
     void displayHistory(){
-        cout<<"medical history for"<<name<<":"<<endl;
-        for(const string &record:medicalHistory){
-            cout<<"-"<<record<<endl;
+              cout << "Medical history for " << name << ":\n";
+        stack<string> temp = medicalHistory;
+        while (!temp.empty()) {
+            cout << "- " << temp.top() << endl;
+            temp.pop();
         }
     }
+
+
 
     int getId(){
     return id;}
