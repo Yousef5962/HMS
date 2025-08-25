@@ -176,9 +176,76 @@ public:
 
     void addEmergency(int patientId);
 
-    int handleEmergency();
+        int handleEmergency()
+    {
+        if (emergencyQueue.empty())
+        {
+            cout << "No emergency cases to handle." << endl;
+            return -1;
+        }
+        int patientId = emergencyQueue.front();
+        emergencyQueue.pop();
 
-    void bookAppointment(int doctorId, int patientId);
+        Patient* patient = nullptr;
+        for (int i = 0; i < patients.size(); ++i)
+        {
+            if (patients[i].getId() == patientId)
+            {
+                patient = &patients[i];
+                break;
+            }
+        }
+
+        if (patient)
+        {
+            cout << "Emergency handled for patient: " << patient->getName() << endl;
+        }
+        else
+        {
+            cout << "Emergency case for unknown patient ID: " << patientId << endl;
+        }
+
+        return patientId;
+    }
+
+        void bookAppointment(int doctorId, int patientId)
+    {
+        Doctor* doctor = nullptr;
+        Patient* patient = nullptr;
+
+        for (int i = 0; i < doctors.size(); ++i)
+        {
+            if (doctors[i].getId() == doctorId)
+            {
+                doctor = &doctors[i];
+                break;
+            }
+        }
+
+        for (int i = 0; i < patients.size(); ++i)
+        {
+            if (patients[i].getId() == patientId)
+            {
+                patient = &patients[i];
+                break;
+            }
+        }
+
+        if (!doctor)
+        {
+            cout << "Booking Failed: Doctor with ID " << doctorId << " not found." << endl;
+            return;
+        }
+        if (!patient)
+        {
+            cout << "Booking Failed: Patient with ID " << patientId << " not found." << endl;
+            return;
+        }
+
+        doctor->addAppointment(patientId);
+        cout << "Appointment booked: Patient " << patient->getName()
+             << " with Doctor " << doctor->getName() << endl;
+    }
 
     void displayPatientInfo(int patientId)
     {
